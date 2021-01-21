@@ -1,0 +1,22 @@
+{
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint",
+      "protractor"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:protractor/recommended"
+    ],
+    "env": {
+        "browser": true,
+        "node": true,
+        "mocha ": true
+    },
+    "rules": { 
+      "no-console": 2 // Remember, this means error!
+    }
+  }
