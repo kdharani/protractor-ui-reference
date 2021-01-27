@@ -1,31 +1,51 @@
 import {Config} from 'protractor';
+const globalAny: any = global;
 
 export const config: Config =  {
 
   allScriptsTimeout: 120000,
 
   seleniumAddress: 'http://localhost:4444/wd/hub',
-  baseUrl: 'http://localhost',
+  baseUrl: 'http://petclinicui.e46708b92c054086909b.eastus.aksapp.io/petclinic/',
   capabilities: {
-      browserName: 'chrome'
+      browserName: 'chrome',
+      chromeOptions: {
+          args: ['start-maximized']
+      }
   },
   framework: 'mocha',
   specs: [
-      './protractor-javascript/specs/spec.js'
+      '../protractor-typescript/specs/spec.js'
   ],
   logLevel: 'INFO',
   mochaOpts: {
       bail: true,
       colors: true,
       compilers: 'ts:ts-node/register',
-      reporter: 'mochawesome',
-      reporterOptions: {
-          reportDir: './reports',
-          reportFileName: 'protractor_mocha_report',
-          enableCharts: true
-      },
+      reporter: 'mochawesome-screenshots',
+    //   reporterOptions: {
+    //       reportDir: './reports',
+    //       reportFileName: 'protractor_mocha_report',
+    //       enableCharts: true
+    //   },
+    reporterOptions: {
+        reportDir: './reports',
+        reportName: 'protractor_mocha_report',
+        reportTitle: 'Reference UI Framework',
+        reportPageTitle: 'Pet Clinic',
+        takePassedScreenshot: true,
+        clearOldScreenshots: true,
+        shortScrFileNames: false,
+        jsonReport: false,
+        multiReport: false
+    },
       timeout: 30000,
       ui: "bdd",
+  },
+
+  onPrepare: () => {
+        const chai = require("chai").use(require("chai-as-promised"));
+        globalAny.chai = chai;
   },
 
 };

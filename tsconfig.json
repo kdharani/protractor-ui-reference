@@ -1,13 +1,16 @@
 {
-  "compilerOptions": {
+    "compileOnSave": true,
+    "compilerOptions": {
       "module": "commonjs",
       "target": "es6",
       "moduleResolution": "node",
       "sourceMap": false,
       "declaration": false,
       "removeComments": false,
-      "noImplicitAny": true,
+      "noImplicitAny": false,
       "inlineSourceMap": true,
+      "esModuleInterop": false,
+      "resolveJsonModule": true,
       "outDir": "dist",
       "typeRoots": [
           "node_modules/@types"
