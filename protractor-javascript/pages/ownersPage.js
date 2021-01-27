@@ -27,8 +27,6 @@ page.steps.checkOwnerExists = async function (owner) {
             break;
         }
     }
-    browser.sleep(5000);
-
     return exists;
 }
 
@@ -61,5 +59,14 @@ page.steps.getPetType = async () => {
     return await page.element('petType').getText();
 }
 
+page.steps.getPetDetails = async () => {
+    let name = await page.steps.getPetName();
+    let dob = await page.steps.getPetDob();
+    let type = await page.steps.getPetType();
+    let pet = await page.pojo('name', 'dob', 'type'); // create the POJO
+    return pet(name, dob, type); // create an 'instance' of the POJO
+
+}
+
 //export the page you created
-module.exports = page;
+module.exports = page

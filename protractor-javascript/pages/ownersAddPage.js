@@ -11,7 +11,7 @@ const selectors = {
     cityTbx : {id: 'city'},
     telephoneTbx : {id: 'telephone'},
     addOwnerBtn : {css: 'div.form-group button:nth-child(2)'},
-    backBtn : {css: 'div.form-group button:nth-child(1)'},
+    backBtn : {css: 'div.form-group button:nth-child(1)'}
 
 };
 

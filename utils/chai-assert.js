@@ -1,8 +1,8 @@
-var chai = require('chai');
-var chaiAsPromised = require('chai-as-promised');
+let chai = require('chai');
+let chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
-var expect = chai.expect;
-var should = chai.should;
+let expect = chai.expect;
+let should = chai.should;
 
 module.exports = {
   expect: expect,
