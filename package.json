@@ -12,8 +12,8 @@
     "update-webdriver": "webdriver-manager update",
     "prestart-webdriver": "npm run update-webdriver",
     "start-webdriver": "webdriver-manager start",
-    "pretest": "npx tsc",
-    "test": "protractor dist/configs/protractor-ts-config.js",
+    "test-javascript": "npx tsc && protractor dist/configs/protractor-js-config.js",
+    "test-typescript": "npx tsc && protractor dist/configs/protractor-ts-config.js",
     "test-cucumber": "npx tsc && protractor dist/configs/protractor-ts-cucumber-config.js",
     "lint": "eslint . --ext .ts"
   },
