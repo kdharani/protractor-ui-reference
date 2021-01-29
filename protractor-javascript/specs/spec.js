@@ -1,12 +1,9 @@
-const nav = require('./../pages/navigationPage.js');
 const data = require('./../../data/testData.js');
 const ownersAddPage = require('./../pages/ownersAddPage.js');
 const ownersPage = require('./../pages/ownersPage.js');
 const vetsPage = require('./../pages/vetsPage.js')
 const vetsAddPage = require('./../pages/vetsAddPage.js')
-const logger = require('../../utils/log4jsconfig.js');
 const expect = require('../../utils/chai-assert.js').expect;
-const logReport = require('mochawesome-screenshots/logReport');
 const { vets } = require('./../../data/testData.js');
 
 

@@ -1,12 +1,14 @@
 import {Config} from 'protractor';
+import { options } from "../utils/cucumber.report.optons";
 const reporter = require("cucumber-html-reporter");
+const globalAny: any = global;
 
 export const config: Config = {
 
     allScriptsTimeout: 120000,
 
     seleniumAddress: 'http://localhost:4444/wd/hub',
-    baseUrl: 'http://localhost',
+    baseUrl: 'http://petclinicui.e46708b92c054086909b.eastus.aksapp.io/petclinic/',
     capabilities: {
         browserName: 'chrome'
     },
@@ -14,7 +16,7 @@ export const config: Config = {
     framework: 'custom',
     frameworkPath: require.resolve("protractor-cucumber-framework"),
     specs: [
-        './protractor-typescript-cucumber/features/**/*.feature'
+        '../../protractor-typescript-cucumber/features/*.feature'
     ],
     logLevel: 'INFO',
 
@@ -24,19 +26,18 @@ export const config: Config = {
         "dry-run": false,
         "fail-fast": false,
         "format": ["json:./reports/cucumber_report.json"],
-        "require": ["./protractor-typescript-cucumber/stepdefinitions/**/*.ts"],
-        "tags": "",
+        "require": ["../protractor-typescript-cucumber/stepdefinitions/*.js"],
+        "tags": ["@functional"],
 
     },
     onComplete: () => {
-        const cucumberReporterOptions = {
-            theme: 'bootstrap',
-            jsonFile: './reports/cucumber_report.json',
-            output: process.cwd() + './reports/cucumber_reporter.html',
-            reportSuiteAsScenarios: true
-        };
-        reporter.generate(cucumberReporterOptions);
-    }
+        reporter.generate(options);
+    },
+
+    onPrepare: () => {
+        const chai = require("chai").use(require("chai-as-promised"));
+        globalAny.chai = chai;
+  },
 };
 /*
 ====================================================================

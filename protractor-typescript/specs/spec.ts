@@ -13,7 +13,7 @@ describe('Pet Clinic tests ', function(){
     this.timeout(10000000);
     
     it('Confirm pet details for Peter McTavish', async function () {
-        await ownersPage.log(this,'Navigate to Add owners page');
+        await ownersPage.log(this,'Navigate to owners page');
         await ownersPage.get();
         await ownersPage.log(this,'Select owner');
         await ownersPage.selectOwner(data.owner);
