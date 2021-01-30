@@ -1,9 +1,10 @@
 import { Given, When, Then } from "cucumber";
 import data from "./../../data/testData";
-import {ownersAddPage} from './../pages/ownersAddPage';
-import { ownersPage} from './../pages/ownersPage';
-import { vetsPage} from './../pages/vetsPage';
-import { vetsAddPage } from './../pages/vetsAddPage';
+import {ownersAddPage} from './../../protractor-typescript/pages/ownersAddPage';
+import { ownersPage} from './../../protractor-typescript/pages/ownersPage';
+import { vetsPage} from './../../protractor-typescript/pages/vetsPage';
+import { vetsAddPage } from './../../protractor-typescript/pages/vetsAddPage';
+
 const expect = global['chai'].expect;
 
 let radiologyCount = 0;

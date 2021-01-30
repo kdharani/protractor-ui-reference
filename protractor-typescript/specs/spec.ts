@@ -13,11 +13,11 @@ describe('Pet Clinic tests ', function(){
     this.timeout(10000000);
     
     it('Confirm pet details for Peter McTavish', async function () {
-        await ownersPage.log(this,'Navigate to owners page');
+        await ownersPage.log('Navigate to owners page', this);
         await ownersPage.get();
-        await ownersPage.log(this,'Select owner');
+        await ownersPage.log('Select owner', this);
         await ownersPage.selectOwner(data.owner);
-        await ownersPage.log(this,'Verify pet details');
+        await ownersPage.log('Verify pet details', this);
         let pet = await ownersPage.getPetDetails();
         expect(pet.name, 'Pet name mismatch').to.be.equal(data.pet.name);
         expect(pet.dob, 'Pet DOB mismatch').to.be.equal(data.pet.dob);
@@ -26,39 +26,39 @@ describe('Pet Clinic tests ', function(){
     
     it('Confirm number of radiology vets', async function () {
         let radiologyCount = 0;
-        await vetsPage.log(this, 'Navigate to vets page');
+        await vetsPage.log('Navigate to vets page', this);
         await vetsPage.get();
-        await vetsPage.log(this, 'Get specialities count')
+        await vetsPage.log('Get specialities count', this)
         radiologyCount = await vetsPage.getSpecialitiesCount(data.vets);
-        await vetsAddPage.log(this, 'Navigate to vets add page');
+        await vetsAddPage.log('Navigate to vets add page', this);
         await vetsAddPage.get();
-        await vetsAddPage.log(this, 'Add new vet');
+        await vetsAddPage.log('Add new vet', this);
         await vetsAddPage.addVet(data.vets);
-        await vetsAddPage.log(this, 'Verify radiology cont');
+        await vetsAddPage.log('Verify radiology cont', this);
         expect(await vetsPage.getSpecialitiesCount(data.vets), 'radiology count mismatch').to.be.equal(radiologyCount+1);
     })
     
     it('Delete vets test', async function () {
         let vetsCount = 0;
-        await vetsPage.log(this, 'Navigate to vets page');
+        await vetsPage.log('Navigate to vets page', this);
         await vetsPage.get();
-        await vetsPage.log(this, 'Get vets count');
+        await vetsPage.log('Get vets count', this);
         vetsCount = await vetsPage.getVetsCount();
-        await vetsPage.log(this, 'Delete a vet');
+        await vetsPage.log('Delete a vet', this);
         await vetsPage.deleteVet(data.vets);
-        await vetsPage.log(this, 'Verify vet was deleted');
+        await vetsPage.log('Verify vet was deleted', this);
         expect(await vetsPage.getVetsCount(), 'Vet was not deleted').to.be.equal(vetsCount-1);
         
     })
     it("Add owner test", async function (){
         // logger.log().info('Navigate to Add owners page');
         // logReport.log(this, 'Navigate to Add owners page');
-        await ownersPage.log(this,'Navigate to Add owners page');
+        await ownersPage.log('Navigate to Add owners page', this);
         await ownersAddPage.get();
-        await ownersPage.log(this,'Add new owner');
+        await ownersPage.log('Add new owner', this);
         await ownersAddPage.addOwner(data.newOwner);
         await ownersPage.get();
-        await ownersPage.log(this,'Check owner exists');
+        await ownersPage.log('Check owner exists', this);
         expect(await ownersPage.checkOwnerExists(data.newOwner), 'Owner not added').equal(true);
     });
 });

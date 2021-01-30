@@ -50,9 +50,13 @@ export class Page {
         };
     };
 
-    public async log(ref, message:string) {
-        logger.log().info(message);
-        logReport.log(ref, message);
+    public log(message:string, ref?) {
+        if(ref !== undefined){
+            logger.log().info(message);
+            logReport.log(ref, message);
+        } else {
+            logger.log().info(message);
+        }
     };
 
     public async get (waitFor?:string, timeout?:number){
