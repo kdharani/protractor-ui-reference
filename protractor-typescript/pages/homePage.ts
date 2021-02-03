@@ -1,6 +1,6 @@
 import { Page } from "./page";
 
-const route:string = '';
+const route = 'welcome';
 const selector = {
 
 }

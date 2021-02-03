@@ -1,6 +1,6 @@
 import { Page } from "./page";
 
-const route:string = 'owners/add';
+const route = 'owners/add';
 
 const selector = {
     fnameTbx : {id: 'firstName'},
@@ -19,7 +19,7 @@ class OwnersAddPage extends Page{
     }
 
     public async addOwner (owner){
-        await this.waitForElementVisible('fnameTbx', this.timeout);
+        await this.waitForElementVisible('fnameTbx', this.timeout.SHORT);
         await this.element('fnameTbx').sendKeys(owner.firstName);
         await this.element('lnameTbx').sendKeys(owner.lastName)
         await this.element('addressTbx').sendKeys(owner.address)

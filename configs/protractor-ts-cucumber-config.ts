@@ -1,5 +1,5 @@
 import {Config} from 'protractor';
-import { options } from "../utils/cucumber.report.optons";
+import { options } from "../utils/cucumber.report.options";
 const reporter = require("cucumber-html-reporter");
 const globalAny: any = global;
 
@@ -10,7 +10,10 @@ export const config: Config = {
     seleniumAddress: 'http://localhost:4444/wd/hub',
     baseUrl: 'http://petclinicui.e46708b92c054086909b.eastus.aksapp.io/petclinic/',
     capabilities: {
-        browserName: 'chrome'
+        browserName: 'chrome',
+        chromeOptions: {
+            args: ['start-maximized']
+        }
     },
 
     framework: 'custom',

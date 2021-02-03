@@ -1,7 +1,7 @@
 export default {
     newOwner: {
-        firstName: 'test', 
-        lastName: 'test',
+        firstName: 'testOwner', 
+        lastName: 'testlastname',
         address: 'lake view road',
         city: 'new york',
         telephone: '8008015463'

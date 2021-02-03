@@ -12,7 +12,7 @@ let vetsCount = 0;
 
 Given ('User is on owners page', async () => {
     ownersPage.log('Navigate to owners page');
-    await ownersPage.get();
+    await ownersPage.navigate();
 })
 
 When ('User selects Peter McTavish owner', async () => {
@@ -30,14 +30,14 @@ Then ("McTavish's pets and visits info should be displayed", async () => {
 
 Given ('User prepared to add a Radiology veterinarian', async () => {
     vetsPage.log('Navigate to vets page');
-    await vetsPage.get();
+    await vetsPage.navigate();
     vetsPage.log( 'Get specialities count')
     radiologyCount = await vetsPage.getSpecialitiesCount(data.vets);
 })
 
 When ('User adds a new veterinarian with type Radiology', async () => {
     vetsAddPage.log('Navigate to vets add page');
-    await vetsAddPage.get();
+    await vetsAddPage.navigate();
     vetsAddPage.log( 'Add new vet');
     await vetsAddPage.addVet(data.vets);
 })
@@ -49,7 +49,7 @@ Then ('The newly added veterinarian should show up on the veterinarian page', as
 
 Given ('User prepared to delete a veterinarian', async () => {
     vetsPage.log('Navigate to vets page');
-    await vetsPage.get();
+    await vetsPage.navigate();
     vetsPage.log( 'Get vets count');
     vetsCount = await vetsPage.getVetsCount();
 })
@@ -66,7 +66,7 @@ Then ('Deleted veterinarian does not show up on the veterinarian page', async ()
 
 Given ('User preared to add a new owner', async () => {
     ownersPage.log('Navigate to Add owners page');
-    await ownersAddPage.get();
+    await ownersAddPage.navigate();
 })
 
 When ('User adds new owner', async () => {
@@ -75,9 +75,13 @@ When ('User adds new owner', async () => {
 })
 
 Then ('the newly added owner should show up on the owners page', async () => {
-    await ownersPage.get();
+    await ownersPage.navigate();
     ownersPage.log('Check owner exists');
-    expect(await ownersPage.checkOwnerExists(data.newOwner), 'Owner not added').equal(true);
+    const owner = await ownersPage.getOwnerDetails(data.newOwner);
+    expect(owner.name, 'Ower name').to.be.equal(`${data.newOwner.firstName} ${data.newOwner.lastName}`);
+    expect(owner.address, 'Owner address').to.be.equal(data.newOwner.address);
+    expect(owner.city, 'Owner city').to.be.equal(data.newOwner.city);
+    expect(owner.telephone, 'Owner telephone').to.be.equal(data.newOwner.telephone);
 })
 
 

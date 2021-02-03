@@ -15,6 +15,12 @@ const vanilla_selectors = [
 const Page = {
     route: "",/*just path, not host /login /admin/dashboard*/
 
+    timeout: {
+        SHORT: 2000,
+        MEDIUM: 30000,
+        LONG: 60000
+    },
+
     sels: {
         /*
          selectorName: selector
@@ -52,12 +58,12 @@ const Page = {
         };
     },
 
-    log: async function (ref, message) {
+    log: async function (mochaContext, message) {
         logger.log().info(message);
-        logReport.log(ref, message);
+        logReport.log(mochaContext, message);
     },
 
-    get: async function(waitFor, timeout){
+    navigate: async function(waitFor, timeout){
         if(waitFor!==undefined) {
             await browser.get(this.route);
             await browser.wait(this.isElementPresent(waitFor), timeout);

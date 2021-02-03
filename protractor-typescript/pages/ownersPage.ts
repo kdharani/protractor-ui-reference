@@ -1,10 +1,10 @@
 import { Page } from "./page";
-import {browser,element, by} from 'protractor';
+import {element, by} from 'protractor';
 
-const route:string = 'owners';
+const route = 'owners';
 const selector = {
     ownersTable : {css: '.table.table-striped'},
-    ownerFirstNameList : {css: '.table-responsive td a'},
+    ownerNameList : {css: '.table-responsive td a'},
     petName : {css: '.table.table-striped .dl-horizontal dd:nth-child(2)'},
     petDob : {css: '.table.table-striped .dl-horizontal dd:nth-child(4)'},
     petType : {css: '.table.table-striped .dl-horizontal dd:nth-child(6)'}
@@ -16,29 +16,37 @@ class OwnersPage extends Page{
         super(selector, route);
     }
 
-    public async checkOwnerExists(owner): Promise<boolean> {
-        let exists = false;
-        await browser.wait (this.element('ownersTable').isPresent());
-        // let nameList  = page.elements('ownerFirstNameList');
-        let nameList  = await element.all(by.css('.table-responsive td a'));
+    public async getOwnerDetails(owner): Promise<any> {
+        let name = "";
+        let address = "";
+        let city = "";
+        let telephone = "";
+        let ownerDetail;
+    
+        await this.waitForElementVisible('ownersTable', this.timeout.SHORT);
+        const nameList  = await this.elements('ownerNameList');
+        
         for (let index = 0; index < nameList.length; index += 1) {
-            let name = await nameList[index].getText();
+            name = await nameList[index].getText();
+            
             if(name === `${owner.firstName} ${owner.lastName}`){
-                exists = true;
-                console.log('Owner Exists');
+                address = await element(by.css(`.table-responsive tr:nth-child(${index+1}) td:nth-child(2)`)).getText();
+                city = await element(by.css(`.table-responsive tr:nth-child(${index+1}) td:nth-child(3)`)).getText();
+                telephone = await element(by.css(`.table-responsive tr:nth-child(${index+1}) td:nth-child(4)`)).getText();
+                ownerDetail = await this.pojo('name', 'address', 'city', 'telephone'); // create the POJO
                 break;
             }
         }
-    return exists;
+        return ownerDetail(name, address, city, telephone);
     }
 
     public async selectOwner (owner) {
 
-        await this.waitForElementVisible('ownersTable', this.timeout);
+        await this.waitForElementVisible('ownersTable', this.timeout.SHORT);
     
-        let nameList  = await element.all(by.css('.table-responsive td a'));
+        const nameList  = await this.elements('ownerNameList');
         for (let index = 0; index < nameList.length; index += 1) {
-            let name = await nameList[index].getText();
+            const name = await nameList[index].getText();
             if(name === `${owner.name}`){
                 await nameList[index].click();
                 break;
@@ -47,25 +55,25 @@ class OwnersPage extends Page{
     }
     
     public async getPetName () {
-        await this.waitForElementVisible('petName', this.timeout);
+        await this.waitForElementVisible('petName', this.timeout.SHORT);
         return await this.element('petName').getText();
     }
     
     public async getPetDob () {
-        await this.waitForElementVisible('petDob', this.timeout);
+        await this.waitForElementVisible('petDob', this.timeout.SHORT);
         return await this.element('petDob').getText();
     }
     
     public async getPetType () {
-        await this.waitForElementVisible('petType', this.timeout);
+        await this.waitForElementVisible('petType', this.timeout.SHORT);
         return await this.element('petType').getText();
     }
     
     public async getPetDetails (): Promise<any> {
-        let name = await this.getPetName();
-        let dob = await this.getPetDob();
-        let type = await this.getPetType();
-        let pet = await this.pojo('name', 'dob', 'type'); // create the POJO
+        const name = await this.getPetName();
+        const dob = await this.getPetDob();
+        const type = await this.getPetType();
+        const pet = await this.pojo('name', 'dob', 'type'); // create the POJO
         return pet(name, dob, type); // create an 'instance' of the POJO
     
     }

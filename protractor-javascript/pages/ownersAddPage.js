@@ -1,5 +1,3 @@
-const { browser } = require('protractor');
-// const page = require('protractor-base-page').Page();
 const page = require('./page.js').Page();
 
 const route = 'owners/add';
@@ -18,8 +16,7 @@ const selectors = {
 page.construct(selectors,route);
 
 page.steps.addOwners = async function (owner){
-    await page.waitForElementVisible('fnameTbx', 2000);
-    //browser.wait(page.element('fnameTbx').isPresent());
+    await page.waitForElementVisible('fnameTbx', page.timeout.SHORT);
     await page.element('fnameTbx').sendKeys(owner.firstName);
     await page.element('lnameTbx').sendKeys(owner.lastName)
     await page.element('addressTbx').sendKeys(owner.address)

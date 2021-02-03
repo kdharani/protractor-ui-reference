@@ -20,3 +20,9 @@ npm run test-typescript
 To run the Javascript version
 ```bash
 npm run test-javascript
+```
+
+To lint your code
+```bash
+npm run lint
+```

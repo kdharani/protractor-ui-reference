@@ -15,11 +15,11 @@ class VetsAddPage extends Page {
         super (selectors, route);
     }
 
-    public async addVet (vets) {
-        await this.waitForElementVisible('firstNameTbx', this.timeout);
-        await this.element('firstNameTbx').sendKeys(vets.firstName);
-        await this.element('lastNameTbx').sendKeys(vets.lastName);
-        await this.element('specialitiesDropDown').sendKeys(vets.speciality);
+    public async addVet (vet) {
+        await this.waitForElementVisible('firstNameTbx', this.timeout.SHORT);
+        await this.element('firstNameTbx').sendKeys(vet.firstName);
+        await this.element('lastNameTbx').sendKeys(vet.lastName);
+        await this.element('specialitiesDropDown').sendKeys(vet.speciality);
         await this.element('saveVetButton').click();
         await this.waitForElementInVisible('saveVetButton',2000);
     }

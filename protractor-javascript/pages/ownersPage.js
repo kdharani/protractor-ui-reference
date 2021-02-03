@@ -1,12 +1,11 @@
-const { browser } = require('protractor');
-// const page = require('protractor-base-page').Page();
+const { element } = require('protractor');
 const page = require('./page.js').Page();
 
 const route = 'owners';
 
 const selectors = {
     ownersTable : {css: '.table.table-striped'},
-    ownerFirstNameList : {css: '.table-responsive td a'},
+    ownerNameList : {css: '.table-responsive td a'},
     petName : {css: '.table.table-striped .dl-horizontal dd:nth-child(2)'},
     petDob : {css: '.table.table-striped .dl-horizontal dd:nth-child(4)'},
     petType : {css: '.table.table-striped .dl-horizontal dd:nth-child(6)'}
@@ -14,27 +13,35 @@ const selectors = {
 
 page.construct(selectors,route);
 
-page.steps.checkOwnerExists = async function (owner) {
-    let exists = false;
-    await browser.wait (page.element('ownersTable').isPresent());
-    // let nameList  = page.elements('ownerFirstNameList');
-    let nameList  = await element.all(by.css('.table-responsive td a'));
+page.steps.getOwnerDetails = async function (owner) {
+    let name = "";
+    let address = "";
+    let city = "";
+    let telephone = "";
+    let ownerDetail;
+
+    await page.waitForElementVisible('ownersTable', page.timeout.SHORT);
+    let nameList  = await page.elements('ownerNameList');
+    
     for (let index = 0; index < nameList.length; index += 1) {
-        let name = await nameList[index].getText();
+        name = await nameList[index].getText();
+        
         if(name === `${owner.firstName} ${owner.lastName}`){
-            exists = true;
-            console.log('Owner Exists');
+            address = await element(by.css(`.table-responsive tr:nth-child(${index+1}) td:nth-child(2)`)).getText();
+            city = await element(by.css(`.table-responsive tr:nth-child(${index+1}) td:nth-child(3)`)).getText();
+            telephone = await element(by.css(`.table-responsive tr:nth-child(${index+1}) td:nth-child(4)`)).getText();
+            ownerDetail = await page.pojo('name', 'address', 'city', 'telephone'); // create the POJO
             break;
         }
     }
-    return exists;
+    return ownerDetail(name, address, city, telephone);
 }
 
 page.steps.selectOwner = async (owner) => {
 
-    await page.waitForElementVisible('ownersTable', 2000);
+    await page.waitForElementVisible('ownersTable', page.timeout.SHORT);
 
-    let nameList  = await element.all(by.css('.table-responsive td a'));
+    let nameList  = await page.elements('ownerNameList');
     for (let index = 0; index < nameList.length; index += 1) {
         let name = await nameList[index].getText();
         if(name === `${owner.name}`){
@@ -45,17 +52,17 @@ page.steps.selectOwner = async (owner) => {
 }
 
 page.steps.getPetName = async () => {
-    await page.waitForElementVisible('petName', 2000);
+    await page.waitForElementVisible('petName', page.timeout.SHORT);
     return await page.element('petName').getText();
 }
 
 page.steps.getPetDob = async () => {
-    await page.waitForElementVisible('petDob', 2000);
+    await page.waitForElementVisible('petDob', page.timeout.SHORT);
     return await page.element('petDob').getText();
 }
 
 page.steps.getPetType = async () => {
-    await page.waitForElementVisible('petType', 2000);
+    await page.waitForElementVisible('petType', page.timeout.SHORT);
     return await page.element('petType').getText();
 }
 

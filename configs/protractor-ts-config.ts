@@ -19,15 +19,10 @@ export const config: Config =  {
   ],
   logLevel: 'INFO',
   mochaOpts: {
-      bail: true,
+      bail: false,
       colors: true,
       compilers: 'ts:ts-node/register',
       reporter: 'mochawesome-screenshots',
-    //   reporterOptions: {
-    //       reportDir: './reports',
-    //       reportFileName: 'protractor_mocha_report',
-    //       enableCharts: true
-    //   },
     reporterOptions: {
         reportDir: './reports',
         reportName: 'protractor_mocha_report',
@@ -39,7 +34,7 @@ export const config: Config =  {
         jsonReport: false,
         multiReport: false
     },
-      timeout: 30000,
+      timeout: 60000,
       ui: "bdd",
   },
 

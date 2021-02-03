@@ -15,7 +15,7 @@
     "test-javascript": "protractor configs/protractor-js-config.js",
     "test-typescript": "npx tsc && protractor dist/configs/protractor-ts-config.js",
     "test-cucumber": "npx tsc && protractor dist/configs/protractor-ts-cucumber-config.js",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts,.js"
   },
   "keywords": [
     "ui-reference"

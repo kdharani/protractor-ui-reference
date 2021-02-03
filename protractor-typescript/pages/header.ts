@@ -1,7 +1,7 @@
 import { Page } from "./page";
 import {browser} from 'protractor';
 
-const route:string = '';
+const route = '';
 const selector = {
     homeLink: {css: 'ul.navbar-nav li:nth-child(1)'},
     ownersLink: {css: 'ul.navbar-nav li:nth-child(2)'},

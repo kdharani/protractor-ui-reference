@@ -1,6 +1,6 @@
 const page = require('./page.js').Page();
 
-const route = '';
+const route = 'welcome';
 
 const selectors = {
 

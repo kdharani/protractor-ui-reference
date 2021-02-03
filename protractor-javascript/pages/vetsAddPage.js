@@ -13,12 +13,12 @@ const selectors = {
 page.construct(selectors,route);
 
 page.steps.addVet = async (vets) => {
-    await page.waitForElementVisible('firstNameTbx', 2000);
+    await page.waitForElementVisible('firstNameTbx', page.timeout.SHORT);
     await page.element('firstNameTbx').sendKeys(vets.firstName);
     await page.element('lastNameTbx').sendKeys(vets.lastName);
     await page.element('specialitiesDropDown').sendKeys(vets.speciality);
     await page.element('saveVetButton').click();
-    await page.waitForElementInVisible('saveVetButton',2000);
+    await page.waitForElementInVisible('saveVetButton',page.timeout.SHORT);
 }
 
 module.exports = page;

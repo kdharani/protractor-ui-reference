@@ -1,3 +1,2 @@
 import {setDefaultTimeout} from 'cucumber';
-
-setDefaultTimeout(9001);
+setDefaultTimeout(60000);

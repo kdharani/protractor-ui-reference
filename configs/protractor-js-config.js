@@ -1,4 +1,4 @@
-const { browser } = require('protractor');
+const globalAny = global;
 
 exports.config = {
 
@@ -20,16 +20,10 @@ exports.config = {
   ],
   logLevel: 'INFO',
   mochaOpts: {
-      bail: true,
+      bail: false,
       colors: true,
       compilers: 'ts:ts-node/register',
-    //   reporter: 'mochawesome',
       reporter: 'mochawesome-screenshots',
-    //   reporterOptions: {
-    //       reportDir: './reports',
-    //       reportFileName: 'protractor_mocha_report',
-    //       enableCharts: true
-    //   },
       reporterOptions: {
         reportDir: './reports',
         reportName: 'protractor_mocha_report',
@@ -38,12 +32,17 @@ exports.config = {
         takePassedScreenshot: true,
         clearOldScreenshots: true,
         shortScrFileNames: false,
-        jsonReport: false,
+        jsonReport: true,
         multiReport: false
     },
-      timeout: 30000,
+      timeout: 60000,
       ui: "bdd",
-  }
+  },
+
+  onPrepare: () => {
+    const chai = require("chai").use(require("chai-as-promised"));
+    globalAny.chai = chai;
+},
 
 
 };

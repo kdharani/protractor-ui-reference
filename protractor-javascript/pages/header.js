@@ -24,7 +24,7 @@ page.construct(selectors, route);
 
 //add a step. this one used a data argument so you can adapt it to multiple testing scenarios
 page.steps.navigateToHome = async function(data){
-    await browser.wait(page.element('homeLink').isPresent());
+    await browser.wait(page.element('homeLink').isPresent(), 'Home link not present');
     await page.element('homeLink').click();
 };
 
