@@ -1,4 +1,4 @@
-import { Page } from "./page";
+import { Page } from "./fedex.page";
 import {element, by} from 'protractor';
 
 const route = 'owners';

@@ -4,7 +4,8 @@ const reporter = require("cucumber-html-reporter");
 const globalAny: any = global;
 
 export const config: Config = {
-
+  //Before performing any action, Protractor waits until there are no pending asynchronous tasks in your Angular application.
+  //This means that all timeouts and http requests are finished.
     allScriptsTimeout: 120000,
 
     seleniumAddress: 'http://localhost:4444/wd/hub',

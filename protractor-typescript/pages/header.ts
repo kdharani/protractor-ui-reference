@@ -1,5 +1,4 @@
-import { Page } from "./page";
-import {browser} from 'protractor';
+import { Page } from "./fedex.page";
 
 const route = '';
 const selector = {
@@ -19,44 +18,6 @@ class Header extends Page {
         super(selector, route);
     }
 
-    public async navigateToHome (){
-        await browser.wait(this.element('homeLink').isPresent());
-        this.element('homeLink').click();
-    };
-    
-    public async navigateToAllOwners () {
-        await browser.wait(this.element('ownersLink').isPresent());
-        await this.element('ownersLink').click();
-        await this.element('allLink').click();
-    }
-    
-    public async navigateToAddOwners () {
-        await browser.wait(this.element('ownersLink').isPresent());
-        await this.element('ownersLink').click();
-        await this.element('addLink').click();
-    }
-    
-    public async navigateToAllVets () {
-        await browser.wait(this.element('vetsLink').isPresent());
-        await this.element('vetsLink').click();
-        await this.element('allLink').click();
-    }
-    
-    public async navigateToAddVets () {
-        await browser.wait(this.element('vetsLink').isPresent());
-        await this.element('vetsLink').click();
-        await this.element('addLink').click();
-    }
-    
-    public async navigateToPetTypes () {
-        await browser.wait(this.element('petsTypesLink').isPresent());
-        await this.element('petsTypesLink').click();
-    }
-    
-    public async navigateToSpecialities () {
-        await browser.wait(this.element('specialitiesLink').isPresent());
-        await this.element('specialitiesLink').click();
-    }
 }
 
 export const header = new Header();

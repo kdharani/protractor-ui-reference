@@ -1,7 +1,7 @@
-import data from "./../../data/testData";
-import {ownersAddPage} from './../pages/ownersAddPage';
-import { ownersPage} from './../pages/ownersPage';
-import { vetsPage} from './../pages/vetsPage';
+import { data } from './../../data/testData';
+import { ownersAddPage } from './../pages/ownersAddPage';
+import { ownersPage } from './../pages/ownersPage';
+import { vetsPage } from './../pages/vetsPage';
 import { vetsAddPage } from './../pages/vetsAddPage';
 const expect = global['chai'].expect;
 
@@ -30,7 +30,7 @@ describe('Pet Clinic tests ', function(){
         await vetsAddPage.navigate();
         await vetsAddPage.log('Add new vet', this);
         await vetsAddPage.addVet(data.vets);
-        await vetsAddPage.log('Verify radiology cont', this);
+        await vetsAddPage.log('Verify radiology count', this);
         expect(await vetsPage.getSpecialitiesCount(data.vets), 'radiology count mismatch').to.be.equal(radiologyCount+1);
     })
     

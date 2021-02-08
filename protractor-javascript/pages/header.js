@@ -1,8 +1,4 @@
-const { browser } = require('protractor');
-
-//require the base page module, clone a new object to build on top of
-// const page = require('protractor-base-page').Page();
-const page = require('./page.js').Page();
+const { Page } = require('./fedex.page');
 
 //set the page route (or use an empty string if desired)
 let route = '';
@@ -19,48 +15,14 @@ const selectors =  {
     addLink: {css: 'li.dropdown.open li:nth-child(2)'}
 };
 
-//add your elements, route to the new page
-page.construct(selectors, route);
+class Header extends Page {
 
-//add a step. this one used a data argument so you can adapt it to multiple testing scenarios
-page.steps.navigateToHome = async function(data){
-    await browser.wait(page.element('homeLink').isPresent(), 'Home link not present');
-    await page.element('homeLink').click();
-};
-
-page.steps.navigateToAllOwners = async function(){
-    await browser.wait(page.element('ownersLink').isPresent());
-    await page.element('ownersLink').click();
-    await page.element('allLink').click();
-}
-
-page.steps.navigateToAddOwners = async function(){
-    await browser.wait(page.element('ownersLink').isPresent());
-    await page.element('ownersLink').click();
-    await page.element('addLink').click();
-}
-
-page.steps.navigateToAllVets = async function(){
-    await browser.wait(page.element('vetsLink').isPresent());
-    await page.element('vetsLink').click();
-    await page.element('allLink').click();
-}
-
-page.steps.navigateToAddVets = async function(){
-    await browser.wait(page.element('vetsLink').isPresent());
-    await page.element('vetsLink').click();
-    await page.element('addLink').click();
-}
-
-page.steps.navigateToPetTypes = async function(){
-    await browser.wait(page.element('petsTypesLink').isPresent());
-    await page.element('petsTypesLink').click();
-}
-
-page.steps.navigateToSpecialities = async function(){
-    await browser.wait(page.element('specialitiesLink').isPresent());
-    await page.element('specialitiesLink').click();
+    constructor () {
+        super(selectors, route);
+    }
 }
 
 //export the page you created
-module.exports = page;
+module.exports = {
+    header: new Header()
+};

@@ -1,4 +1,4 @@
-const page = require('./page.js').Page();
+const { Page } = require('./fedex.page');
 
 const route = 'owners/add';
 
@@ -13,17 +13,24 @@ const selectors = {
 
 };
 
-page.construct(selectors,route);
+class OwnersAddPage extends Page {
 
-page.steps.addOwners = async function (owner){
-    await page.waitForElementVisible('fnameTbx', page.timeout.SHORT);
-    await page.element('fnameTbx').sendKeys(owner.firstName);
-    await page.element('lnameTbx').sendKeys(owner.lastName)
-    await page.element('addressTbx').sendKeys(owner.address)
-    await page.element('cityTbx').sendKeys(owner.city)
-    await page.element('telephoneTbx').sendKeys(owner.telephone)
-    await page.element('addOwnerBtn').click()
+    constructor () {
+        super (selectors, route);
+    }
+
+    async addOwners (owner){
+        await this.waitForElementVisible('fnameTbx', this.timeout.SHORT);
+        await this.element('fnameTbx').sendKeys(owner.firstName);
+        await this.element('lnameTbx').sendKeys(owner.lastName)
+        await this.element('addressTbx').sendKeys(owner.address)
+        await this.element('cityTbx').sendKeys(owner.city)
+        await this.element('telephoneTbx').sendKeys(owner.telephone)
+        await this.element('addOwnerBtn').click()
+    }
 }
 
 //export the page you created
-module.exports = page;
+module.exports = {
+    ownersAddPage: new OwnersAddPage()
+};

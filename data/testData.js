@@ -1,4 +1,4 @@
-module.exports = {
+data = {
     newOwner: {
         firstName: 'testOwner', 
         lastName: 'testlastname',
@@ -21,4 +21,6 @@ module.exports = {
     }
 }
 
-//module.export = data;
+module.exports = {
+    data
+};

@@ -1,5 +1,4 @@
-const page = require('./page.js').Page();
-
+const { Page } = require('./fedex.page');
 const route = 'vets';
 
 const selectors = {
@@ -9,37 +8,46 @@ const selectors = {
     deleteButtons: {css: '.table.table-striped tr td:nth-child(3) button:nth-child(2)'}
 };
 
-page.construct(selectors,route);
+class VetsPage  extends Page {
 
-page.steps.getSpecialitiesCount = async (vets) => {
-    let count = 0;
-    await page.waitForElementVisible('vetsTable', page.timeout.SHORT);
-    let specialities = await element.all(by.css('.table.table-striped tr td div'));
-    for(let i = 0; i < specialities.length; i++){
-        if(await specialities[i].getText() === vets.speciality){
-            count++;
-        }
-
+    constructor () {
+        super (selectors, route);
     }
 
-    return count;
-}
-
-page.steps.getVetsCount = async () => {
-    await page.waitForElementVisible('vetsTable', page.timeout.SHORT);
-    let vetsList = await element.all(by.css('.table.table-striped tr td:nth-child(1)'));
-    return vetsList.length;
-}
-
-page.steps.deleteVet = async (vets) => {
-    await page.waitForElementVisible('vetsTable', page.timeout.SHORT);
-    let vetsList = await element.all(by.css('.table.table-striped tr td:nth-child(1)'));
-    let delBtns = await element.all(by.css('.table.table-striped tr td:nth-child(3) button:nth-child(2)'));
-    for(let i = 0; i < vetsList.length; i++){
-        if((await vetsList[i].getText()).trim() === `${vets.firstName} ${vets.lastName}`) {
-            await delBtns[i].click();
+    async getSpecialitiesCount (vet) {
+        let count = 0;
+        await this.waitForElementVisible('vetsTable', this.timeout.SHORT);
+        let specialities = await this.elements('specialitiesList');
+        for(let i = 0; i < specialities.length; i++){
+            if(await specialities[i].getText() === vet.speciality){
+                count++;
+            }
+    
+        }
+    
+        return count;
+    }
+    
+    async getVetsCount () {
+        await this.waitForElementVisible('vetsTable', this.timeout.SHORT);
+        let vetsList = await this.elements('vetsNameList');
+        return vetsList.length;
+    }
+    
+    async deleteVet (vet) {
+        await this.waitForElementVisible('vetsTable', this.timeout.SHORT);
+        let vetsList = await this.elements('vetsNameList');
+        let delBtns = await this.elements('deleteButtons');
+        for(let i = 0; i < vetsList.length; i++){
+            if((await vetsList[i].getText()).trim() === `${vet.firstName} ${vet.lastName}`) {
+                await delBtns[i].click();
+            }
         }
     }
+
 }
 
-module.exports = page;
+
+module.exports = {
+    vetsPage: new VetsPage()
+};

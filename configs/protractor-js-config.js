@@ -2,7 +2,9 @@ const globalAny = global;
 
 exports.config = {
 
-  allScriptsTimeout: 120000,
+  //Before performing any action, Protractor waits until there are no pending asynchronous tasks in your Angular application.
+  //This means that all timeouts and http requests are finished.
+  allScriptsTimeout: 120000,  
 
   seleniumAddress: 'http://localhost:4444/wd/hub',
   baseUrl: 'http://petclinicui.e46708b92c054086909b.eastus.aksapp.io/petclinic/',
@@ -35,7 +37,7 @@ exports.config = {
         jsonReport: true,
         multiReport: false
     },
-      timeout: 60000,
+      timeout: 60000, // mocha test timeout
       ui: "bdd",
   },
 

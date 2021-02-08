@@ -1,4 +1,4 @@
-import { Page } from "./page";
+import { Page } from "./fedex.page";
 
 const route = 'owners/add';
 

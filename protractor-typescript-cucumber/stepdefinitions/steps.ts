@@ -1,8 +1,8 @@
 import { Given, When, Then } from "cucumber";
-import data from "./../../data/testData";
-import {ownersAddPage} from './../../protractor-typescript/pages/ownersAddPage';
-import { ownersPage} from './../../protractor-typescript/pages/ownersPage';
-import { vetsPage} from './../../protractor-typescript/pages/vetsPage';
+import { data } from "./../../data/testData";
+import { ownersAddPage } from './../../protractor-typescript/pages/ownersAddPage';
+import { ownersPage } from './../../protractor-typescript/pages/ownersPage';
+import { vetsPage } from './../../protractor-typescript/pages/vetsPage';
 import { vetsAddPage } from './../../protractor-typescript/pages/vetsAddPage';
 
 const expect = global['chai'].expect;
@@ -43,7 +43,7 @@ When ('User adds a new veterinarian with type Radiology', async () => {
 })
 
 Then ('The newly added veterinarian should show up on the veterinarian page', async () => {
-    vetsAddPage.log('Verify radiology cont');
+    vetsAddPage.log('Verify radiology count');
     expect(await vetsPage.getSpecialitiesCount(data.vets), 'radiology count mismatch').to.be.equal(radiologyCount+1);
 })
 

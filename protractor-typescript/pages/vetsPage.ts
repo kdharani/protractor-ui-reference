@@ -1,4 +1,4 @@
-import { Page } from "./page";
+import { Page } from "./fedex.page";
 
 const route = 'vets';
 const selectors = {
@@ -15,12 +15,12 @@ class VetsPage extends Page {
         super (selectors, route);
     }
 
-    public async getSpecialitiesCount (vets): Promise<number> {
+    public async getSpecialitiesCount (vet): Promise<number> {
         let count = 0;
         await this.waitForElementVisible('vetsTable', this.timeout.SHORT);
         const specialities = await this.elements('specialitiesList');
         for(let i = 0; i < specialities.length; i++){
-            if(await specialities[i].getText() === vets.speciality){
+            if(await specialities[i].getText() === vet.speciality){
                 count++;
             }
     
@@ -34,12 +34,12 @@ class VetsPage extends Page {
         return vetsList.length;
     }
 
-    public async deleteVet (vets) {
+    public async deleteVet (vet) {
         await this.waitForElementVisible('vetsTable', this.timeout.SHORT);
         const vetsList = await this.elements('vetsList');
         const delBtns = await this.elements('deleteButtons');
         for(let i = 0; i < vetsList.length; i++){
-            if((await vetsList[i].getText()).trim() === `${vets.firstName} ${vets.lastName}`) {
+            if((await vetsList[i].getText()).trim() === `${vet.firstName} ${vet.lastName}`) {
                 await delBtns[i].click();
             }
         }

@@ -1,4 +1,4 @@
-const page = require('./page.js').Page();
+const { Page } = require('./fedex.page');
 
 const route = 'vets/add';
 
@@ -10,15 +10,23 @@ const selectors = {
 
 };
 
-page.construct(selectors,route);
+class VetsAddPage extends Page {
 
-page.steps.addVet = async (vets) => {
-    await page.waitForElementVisible('firstNameTbx', page.timeout.SHORT);
-    await page.element('firstNameTbx').sendKeys(vets.firstName);
-    await page.element('lastNameTbx').sendKeys(vets.lastName);
-    await page.element('specialitiesDropDown').sendKeys(vets.speciality);
-    await page.element('saveVetButton').click();
-    await page.waitForElementInVisible('saveVetButton',page.timeout.SHORT);
+    constructor () {
+        super (selectors, route);
+    }
+
+    async addVet (vet) {
+        await this.waitForElementVisible('firstNameTbx', this.timeout.SHORT);
+        await this.element('firstNameTbx').sendKeys(vet.firstName);
+        await this.element('lastNameTbx').sendKeys(vet.lastName);
+        await this.element('specialitiesDropDown').sendKeys(vet.speciality);
+        await this.element('saveVetButton').click();
+        await this.waitForElementInVisible('saveVetButton',this.timeout.SHORT);
+    }
+    
 }
 
-module.exports = page;
+module.exports = {
+    vetsAddPage: new VetsAddPage()
+};

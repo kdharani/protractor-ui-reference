@@ -1,4 +1,4 @@
-import { Page } from "./page";
+import { Page } from "./fedex.page";
 
 const route = 'vets/add';
 const selectors = {
@@ -21,7 +21,7 @@ class VetsAddPage extends Page {
         await this.element('lastNameTbx').sendKeys(vet.lastName);
         await this.element('specialitiesDropDown').sendKeys(vet.speciality);
         await this.element('saveVetButton').click();
-        await this.waitForElementInVisible('saveVetButton',2000);
+        await this.waitForElementInVisible('saveVetButton',this.timeout.SHORT);
     }
 }
 

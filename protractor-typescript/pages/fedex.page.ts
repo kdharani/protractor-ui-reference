@@ -10,18 +10,6 @@ export class Page {
         LONG: 60000
     };
 
-    private vanilla_selectors:string[] = [
-        'className',
-        'css',
-        'id',
-        'linkText',
-        'js',
-        'name',
-        'partialLinkText',
-        'tagName',
-        'xpath'
-    ];
-
     protected sels: {
         /*
          selectorName: selector
@@ -65,7 +53,7 @@ export class Page {
     public async navigate (waitFor?:string, timeout?:number): Promise<void>{
         if(waitFor!==undefined) {
             await browser.get(this.route);
-            await browser.wait(this.isElementPresent(waitFor), timeout);
+            await browser.wait(this.isElementPresent(waitFor), timeout, `Element ${waitFor} not found`);
         } else {
             await browser.get(this.route);
         }
@@ -87,24 +75,6 @@ export class Page {
         return element.all(this.sels[selName]);
     }
 
-    public async velement (selName) {
-        const selector = this.getSelector([selName]);
-        if (this.vanilla_selectors.indexOf(Object.keys(selector)[0]) >= 0) {
-            return browser.driver.findElement(selector);
-        } else {
-            throw new Error(Object.keys(selector)[0]+" is not an allowable locator strategy for "+selector[Object.keys(selector)[0]]);
-        }
-    }
-
-    public async velements (selName) {
-        const selector = this.getSelector([selName]);
-        if (this.vanilla_selectors.indexOf(Object.keys(selector)[0]) >= 0) {
-            return browser.driver.findElements(selector);
-        } else {
-            throw new Error(Object.keys(selector)[0]+" is not an allowable locator strategy for "+selector[Object.keys(selector)[0]]);
-        }
-    }
-
     public async getSelector (selName) {
         const elementSelector = this.sels[selName];
         if (!elementSelector) {
@@ -114,27 +84,27 @@ export class Page {
     }
 
     public async waitForElementText (selName:string, text:string, timeout:number) {
-        return await browser.wait(protractor.ExpectedConditions.textToBePresentInElement(this.element(selName), text), timeout);
+        return await browser.wait(protractor.ExpectedConditions.textToBePresentInElement(this.element(selName), text), timeout, `Element ${selName} not found`);
     }
 
     public async waitForElementVisible (selName:string, timeout:number) {
-        return await browser.wait(protractor.ExpectedConditions.visibilityOf(this.element(selName)), timeout);
+        return await browser.wait(protractor.ExpectedConditions.visibilityOf(this.element(selName)), timeout, `Element ${selName} not found`);
     }
 
     public async waitForElementInVisible (selName:string, timeout:number) {
-        return await browser.wait(protractor.ExpectedConditions.invisibilityOf(this.element(selName)), timeout);
+        return await browser.wait(protractor.ExpectedConditions.invisibilityOf(this.element(selName)), timeout, `Element ${selName} not found`);
     }
 
     public async waitForElementClickable (selName:string, timeout:number) {
-        return await browser.wait(protractor.ExpectedConditions.elementToBeClickable(this.element(selName)), timeout);
+        return await browser.wait(protractor.ExpectedConditions.elementToBeClickable(this.element(selName)), timeout, `Element ${selName} not found`);
     }
 
     public async waitForElementSelected (selName:string, timeout:number) {
-        return await browser.wait(protractor.ExpectedConditions.elementToBeSelected(this.element(selName)), timeout);
+        return await browser.wait(protractor.ExpectedConditions.elementToBeSelected(this.element(selName)), timeout, `Element ${selName} not found`);
     }
 
     public async waitForElementValue (selName:string, text:string, timeout:number) {
-        return await browser.wait(protractor.ExpectedConditions.textToBePresentInElementValue(this.element(selName), text), timeout);
+        return await browser.wait(protractor.ExpectedConditions.textToBePresentInElementValue(this.element(selName), text), timeout, `Element ${selName} not found`);
     }
 
     public async isElementPresent (selName:string) {
