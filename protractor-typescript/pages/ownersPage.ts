@@ -1,23 +1,22 @@
-const { element } = require('protractor');
-const { Page } = require('./fedex.page.js');
+import { Page } from "./fedex.page";
+import {element, by} from 'protractor';
 
 const route = 'owners';
-
-const selectors = {
+const selector = {
     ownersTable : {css: '.table.table-striped'},
     ownerNameList : {css: '.table-responsive td a'},
     petName : {css: '.table.table-striped .dl-horizontal dd:nth-child(2)'},
     petDob : {css: '.table.table-striped .dl-horizontal dd:nth-child(4)'},
     petType : {css: '.table.table-striped .dl-horizontal dd:nth-child(6)'}
-};
+}
 
-class OwnersPage extends Page {
+class OwnersPage extends Page{
 
-    constructor () {
-        super (selectors, route);
+    constructor(){
+        super(selector, route);
     }
 
-    async getOwnerDetails (owner) {
+    public async getOwnerDetails(owner): Promise<any> {
         let name = "";
         let address = "";
         let city = "";
@@ -25,7 +24,7 @@ class OwnersPage extends Page {
         let ownerDetail;
     
         await this.waitForElementVisible('ownersTable', this.timeout.SHORT);
-        let nameList  = await this.elements('ownerNameList');
+        const nameList  = await this.elements('ownerNameList');
         
         for (let index = 0; index < nameList.length; index += 1) {
             name = await nameList[index].getText();
@@ -40,14 +39,14 @@ class OwnersPage extends Page {
         }
         return ownerDetail(name, address, city, telephone);
     }
-    
-    async selectOwner (owner)  {
-    
+
+    public async selectOwner (owner) {
+
         await this.waitForElementVisible('ownersTable', this.timeout.SHORT);
     
-        let nameList  = await this.elements('ownerNameList');
+        const nameList  = await this.elements('ownerNameList');
         for (let index = 0; index < nameList.length; index += 1) {
-            let name = await nameList[index].getText();
+            const name = await nameList[index].getText();
             if(name === `${owner.name}`){
                 await nameList[index].click();
                 break;
@@ -55,33 +54,29 @@ class OwnersPage extends Page {
         }
     }
     
-    async getPetName ()  {
+    public async getPetName () {
         await this.waitForElementVisible('petName', this.timeout.SHORT);
         return await this.element('petName').getText();
     }
     
-    async getPetDob ()  {
+    public async getPetDob () {
         await this.waitForElementVisible('petDob', this.timeout.SHORT);
         return await this.element('petDob').getText();
     }
     
-    async getPetType ()  {
+    public async getPetType () {
         await this.waitForElementVisible('petType', this.timeout.SHORT);
         return await this.element('petType').getText();
     }
     
-    async getPetDetails ()  {
-        let name = await this.getPetName();
-        let dob = await this.getPetDob();
-        let type = await this.getPetType();
-        let pet = await this.pojo('name', 'dob', 'type'); // create the POJO
+    public async getPetDetails (): Promise<any> {
+        const name = await this.getPetName();
+        const dob = await this.getPetDob();
+        const type = await this.getPetType();
+        const pet = await this.pojo('name', 'dob', 'type'); // create the POJO
         return pet(name, dob, type); // create an 'instance' of the POJO
     
     }
-
 }
 
-//export the page you created
-module.exports = {
-    ownersPage: new OwnersPage()
-}
+export const ownersPage = new OwnersPage();

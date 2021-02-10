@@ -1,8 +1,8 @@
-const { Page } = require('./fedex.page');
+import { Page } from "./fedex.page";
 
 const route = 'owners/add';
 
-const selectors = {
+const selector = {
     fnameTbx : {id: 'firstName'},
     lnameTbx : {id: 'lastName'},
     addressTbx : {id: 'address'},
@@ -10,16 +10,15 @@ const selectors = {
     telephoneTbx : {id: 'telephone'},
     addOwnerBtn : {css: 'div.form-group button:nth-child(2)'},
     backBtn : {css: 'div.form-group button:nth-child(1)'}
-
 };
 
-class OwnersAddPage extends Page {
+class OwnersAddPage extends Page{
 
-    constructor () {
-        super (selectors, route);
+    constructor (){
+        super (selector, route);
     }
 
-    async addOwners (owner){
+    public async addOwner (owner){
         await this.waitForElementVisible('fnameTbx', this.timeout.SHORT);
         await this.element('fnameTbx').sendKeys(owner.firstName);
         await this.element('lnameTbx').sendKeys(owner.lastName)
@@ -30,7 +29,4 @@ class OwnersAddPage extends Page {
     }
 }
 
-//export the page you created
-module.exports = {
-    ownersAddPage: new OwnersAddPage()
-};
+export const ownersAddPage = new OwnersAddPage();

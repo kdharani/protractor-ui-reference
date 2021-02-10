@@ -1,4 +1,6 @@
 node_modules
-reports
 screenshots
 debug.log
+reports
+logs
+dist

@@ -1,31 +1,47 @@
 import {Config} from 'protractor';
+const globalAny: any = global;
 
 export const config: Config =  {
-
+  //Before performing any action, Protractor waits until there are no pending asynchronous tasks in your Angular application.
+  //This means that all timeouts and http requests are finished.
   allScriptsTimeout: 120000,
 
   seleniumAddress: 'http://localhost:4444/wd/hub',
-  baseUrl: 'http://localhost',
+  baseUrl: 'http://petclinicui.e46708b92c054086909b.eastus.aksapp.io/petclinic/',
   capabilities: {
-      browserName: 'chrome'
+      browserName: 'chrome',
+      chromeOptions: {
+          args: ['start-maximized']
+      }
   },
   framework: 'mocha',
   specs: [
-      './protractor-javascript/specs/spec.js'
+      '../protractor-typescript/specs/spec.js'
   ],
   logLevel: 'INFO',
   mochaOpts: {
-      bail: true,
+      bail: false,
       colors: true,
       compilers: 'ts:ts-node/register',
-      reporter: 'mochawesome',
-      reporterOptions: {
-          reportDir: './reports',
-          reportFileName: 'protractor_mocha_report',
-          enableCharts: true
-      },
-      timeout: 30000,
+      reporter: 'mochawesome-screenshots',
+    reporterOptions: {
+        reportDir: './reports',
+        reportName: 'protractor_mocha_report',
+        reportTitle: 'Reference UI Framework',
+        reportPageTitle: 'Pet Clinic',
+        takePassedScreenshot: true,
+        clearOldScreenshots: true,
+        shortScrFileNames: false,
+        jsonReport: false,
+        multiReport: false
+    },
+      timeout: 60000, //mocha test timeout
       ui: "bdd",
+  },
+
+  onPrepare: () => {
+        const chai = require("chai").use(require("chai-as-promised"));
+        globalAny.chai = chai;
   },
 
 };

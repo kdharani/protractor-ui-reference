@@ -10,9 +10,12 @@
   "scripts": {
     "preupdate-webdriver": "npm install",
     "update-webdriver": "webdriver-manager update",
-    "preprotractor": "npm run update-webdriver",
-    "protractor": "protractor ./configs/protractor-js-config.js",
-    "start-webdriver": "webdriver-manager start"
+    "prestart-webdriver": "npm run update-webdriver",
+    "start-webdriver": "webdriver-manager start",
+    "test-javascript": "protractor configs/protractor-js-config.js",
+    "test-typescript": "npx tsc && protractor dist/configs/protractor-ts-config.js",
+    "test-cucumber": "npx tsc && protractor dist/configs/protractor-ts-cucumber-config.js",
+    "lint": "eslint . --ext .ts,.js"
   },
   "keywords": [
     "ui-reference"
@@ -20,6 +23,7 @@
   "author": "kannan",
   "license": "ISC",
   "devDependencies": {
+    "@types/mocha": "^8.2.0",
     "@types/node": "^14.14.21",
     "@typescript-eslint/eslint-plugin": "^4.14.0",
     "@typescript-eslint/parser": "^4.14.0",
@@ -35,8 +39,8 @@
     "mochawesome": "^6.2.1",
     "mochawesome-screenshots": "^1.7.3",
     "protractor": "7.0.0",
-    "protractor-base-page": "0.0.4",
     "protractor-cucumber-framework": "6.2.1",
+    "ts-node": "^9.1.1",
     "typescript": "^4.1.3"
   }
 }
