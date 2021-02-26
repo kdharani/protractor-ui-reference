@@ -1,6 +1,4 @@
-import {Config} from 'protractor';
-import { options } from "../utils/cucumber.report.options";
-const reporter = require("cucumber-html-reporter");
+import { Config } from 'protractor';
 const globalAny: any = global;
 
 export const config: Config = {
@@ -15,6 +13,9 @@ export const config: Config = {
         chromeOptions: {
             args: ['start-maximized']
         }
+        ,
+        shardTestFiles: true,  // required for parallel
+        maxInstances: 2,       // required for parallel - 2 browsers
     },
 
     framework: 'custom',
@@ -24,18 +25,14 @@ export const config: Config = {
     ],
     logLevel: 'INFO',
 
-
     cucumberOpts: {
         "compiler": 'ts:ts-node/register',
         "dry-run": false,
         "fail-fast": false,
-        "format": ["json:./reports/cucumber_report.json"],
+        "reporter": 'allure-cucumberjs',
+        "format": "./configs/reporter.js",
         "require": ["../protractor-typescript-cucumber/stepdefinitions/*.js"],
         "tags": ["@functional"],
-
-    },
-    onComplete: () => {
-        reporter.generate(options);
     },
 
     onPrepare: () => {

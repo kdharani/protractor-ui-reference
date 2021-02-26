@@ -1,6 +1,8 @@
 {
     "compileOnSave": true,
     "compilerOptions": {
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
       "module": "commonjs",
       "target": "es6",
       "moduleResolution": "node",
@@ -14,6 +16,7 @@
       "allowJs": true,
       "outDir": "dist",
       "typeRoots": [
+          "node_modules/allure-js-commons/dist/declarations/**/",
           "node_modules/@types"
       ],
       "types": [

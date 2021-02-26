@@ -1,4 +1,5 @@
 import { Page } from "./fedex.page";
+import { allure } from "allure-mocha/runtime";
 
 const route = 'vets';
 const selectors = {
@@ -15,34 +16,52 @@ class VetsPage extends Page {
         super (selectors, route);
     }
 
+    public async navigate(): Promise<void>{
+        return allure.step(`Navigate to vets page`, async () => {
+            this.log(`Navigate to vets page`);
+            return super.navigate();
+        });
+    }
+
     public async getSpecialitiesCount (vet): Promise<number> {
-        let count = 0;
-        await this.waitForElementVisible('vetsTable', this.timeout.SHORT);
-        const specialities = await this.elements('specialitiesList');
-        for(let i = 0; i < specialities.length; i++){
-            if(await specialities[i].getText() === vet.speciality){
-                count++;
+        return allure.step(`Get specialties count for '${vet.firstName} ${vet.lastName}'`, async () => {
+            let count = 0;
+            await this.waitForElementVisible('vetsTable', this.timeout.SHORT);
+            const specialities = await this.elements('specialitiesList');
+            for(let i = 0; i < specialities.length; i++){
+                if(await specialities[i].getText() === vet.speciality){
+                    count++;
+                }
             }
-    
-        }
-        return count;
+
+            this.log(`Get specialties count of '${count}'`);
+            return count;
+        });
     }
 
     public async getVetsCount (): Promise<number> {
-        await this.waitForElementVisible('vetsTable', this.timeout.SHORT);
-        const vetsList = await this.elements('vetsList');
-        return vetsList.length;
+        return allure.step(`Get vets count`, async () => {
+            await this.waitForElementVisible('vetsTable', this.timeout.SHORT);
+            const vetsList = await this.elements('vetsList');
+
+            const vetCount = vetsList.length;
+            this.log(`Got vet count of '${vetCount}'`);
+            return vetCount;
+        });
     }
 
-    public async deleteVet (vet) {
-        await this.waitForElementVisible('vetsTable', this.timeout.SHORT);
-        const vetsList = await this.elements('vetsList');
-        const delBtns = await this.elements('deleteButtons');
-        for(let i = 0; i < vetsList.length; i++){
-            if((await vetsList[i].getText()).trim() === `${vet.firstName} ${vet.lastName}`) {
-                await delBtns[i].click();
+    public async deleteVet (vet): Promise<void>  {
+        return allure.step(`Delete vet '${vet.firstName} ${vet.lastName}'`, async () => {
+            await this.waitForElementVisible('vetsTable', this.timeout.SHORT);
+            const vetsList = await this.elements('vetsList');
+            const delBtns = await this.elements('deleteButtons');
+            for(let i = 0; i < vetsList.length; i++){
+                if((await vetsList[i].getText()).trim() === `${vet.firstName} ${vet.lastName}`) {
+                    await delBtns[i].click();
+                    return true;
+                }
             }
-        }
+        });
     } 
 }
 

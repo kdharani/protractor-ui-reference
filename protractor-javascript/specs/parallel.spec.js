@@ -9,9 +9,9 @@ const runtime = require('allure-mocha/runtime');
 const expect = global['chai'].expect;
 
 //create a suite
-describe('Pet Clinic tests ', function(){
+describe('Pet Clinic tests parallel', function(){
     //create a test
-
+    
     afterEach(async function() {
         if (this.currentTest.state === 'failed') {
             browser.takeScreenshot().then(function(png) { 
@@ -60,13 +60,4 @@ describe('Pet Clinic tests ', function(){
         expect(owner.city, 'Owner city').to.be.equal(data.newOwner.city);
         expect(owner.telephone, 'Owner telephone').to.be.equal(data.newOwner.telephone);        
     });
-
-    it('Example failing test', async function () {
-        let vetsCount = 0;
-        await vetsPage.navigate();
-        vetsCount = await vetsPage.getVetsCount();
-        
-        expect(await vetsPage.getVetsCount(), 'Vet was not deleted').to.be.equal(vetsCount-1);
-    })
-
 });
