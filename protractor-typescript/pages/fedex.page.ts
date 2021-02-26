@@ -1,6 +1,6 @@
 import {browser, element, ElementArrayFinder, ElementFinder, protractor} from 'protractor';
 import { logger } from '../../utils/log4jsconfig'
-const logReport = require('mochawesome-screenshots/logReport');
+import { allure } from "allure-mocha/runtime";
 
 export class Page {
     protected route = '';
@@ -41,16 +41,13 @@ export class Page {
         };
     }
 
-    public log(message:string, ref?): void {
-        if(ref !== undefined){
-            logger.log().info(message);
-            logReport.log(ref, message);
-        } else {
-            logger.log().info(message);
-        }
+    public log(message:string): void {
+        logger.log().info(message);
+        allure.logStep(message)
     }
 
     public async navigate (waitFor?:string, timeout?:number): Promise<void>{
+       
         if(waitFor!==undefined) {
             await browser.get(this.route);
             await browser.wait(this.isElementPresent(waitFor), timeout, `Element ${waitFor} not found`);

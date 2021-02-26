@@ -1,5 +1,6 @@
 const { element } = require('protractor');
 const { Page } = require('./fedex.page.js');
+const runtime = require("allure-mocha/runtime");
 
 const route = 'owners';
 
@@ -17,68 +18,99 @@ class OwnersPage extends Page {
         super (selectors, route);
     }
 
-    async getOwnerDetails (owner) {
-        let name = "";
-        let address = "";
-        let city = "";
-        let telephone = "";
-        let ownerDetail;
-    
-        await this.waitForElementVisible('ownersTable', this.timeout.SHORT);
-        let nameList  = await this.elements('ownerNameList');
-        
-        for (let index = 0; index < nameList.length; index += 1) {
-            name = await nameList[index].getText();
+    async navigate() {
+        return await runtime.allure.step(`Navigate to owner page`, async () => {
             
-            if(name === `${owner.firstName} ${owner.lastName}`){
-                address = await element(by.css(`.table-responsive tr:nth-child(${index+1}) td:nth-child(2)`)).getText();
-                city = await element(by.css(`.table-responsive tr:nth-child(${index+1}) td:nth-child(3)`)).getText();
-                telephone = await element(by.css(`.table-responsive tr:nth-child(${index+1}) td:nth-child(4)`)).getText();
-                ownerDetail = await this.pojo('name', 'address', 'city', 'telephone'); // create the POJO
-                break;
+            return super.navigate();
+        });
+    }
+
+    async getOwnerDetails (owner) {
+        return await runtime.allure.step(`Get owner details'`, async () => {
+            let name = "";
+            let address = "";
+            let city = "";
+            let telephone = "";
+            let ownerDetail;
+        
+            await this.waitForElementVisible('ownersTable', this.timeout.SHORT);
+            const nameList  = await this.elements('ownerNameList');
+            
+            for (let index = 0; index < nameList.length; index += 1) {
+                name = await nameList[index].getText();
+                
+                if(name === `${owner.firstName} ${owner.lastName}`){
+                    address = await element(by.css(`.table-responsive tr:nth-child(${index+1}) td:nth-child(2)`)).getText();
+                    city = await element(by.css(`.table-responsive tr:nth-child(${index+1}) td:nth-child(3)`)).getText();
+                    telephone = await element(by.css(`.table-responsive tr:nth-child(${index+1}) td:nth-child(4)`)).getText();
+                    ownerDetail = await this.pojo('name', 'address', 'city', 'telephone'); // create the POJO
+                    break;
+                }
             }
-        }
-        return ownerDetail(name, address, city, telephone);
+
+            this.log(`Got owner details: '${name}, ${address}, ${city}, ${telephone}'`)
+            return ownerDetail(name, address, city, telephone);
+        })
     }
     
     async selectOwner (owner)  {
-    
-        await this.waitForElementVisible('ownersTable', this.timeout.SHORT);
-    
-        let nameList  = await this.elements('ownerNameList');
-        for (let index = 0; index < nameList.length; index += 1) {
-            let name = await nameList[index].getText();
-            if(name === `${owner.name}`){
-                await nameList[index].click();
-                break;
-            }
-        }
-    }
-    
-    async getPetName ()  {
-        await this.waitForElementVisible('petName', this.timeout.SHORT);
-        return await this.element('petName').getText();
-    }
-    
-    async getPetDob ()  {
-        await this.waitForElementVisible('petDob', this.timeout.SHORT);
-        return await this.element('petDob').getText();
-    }
-    
-    async getPetType ()  {
-        await this.waitForElementVisible('petType', this.timeout.SHORT);
-        return await this.element('petType').getText();
-    }
-    
-    async getPetDetails ()  {
-        let name = await this.getPetName();
-        let dob = await this.getPetDob();
-        let type = await this.getPetType();
-        let pet = await this.pojo('name', 'dob', 'type'); // create the POJO
-        return pet(name, dob, type); // create an 'instance' of the POJO
-    
-    }
+        const message = `Select owner ${owner.name}'`;
 
+        runtime.allure.step(message , async () => {
+            this.log(message);
+
+            await this.waitForElementVisible('ownersTable', this.timeout.SHORT);
+        
+            const nameList  = await this.elements('ownerNameList');
+            for (let index = 0; index < nameList.length; index += 1) {
+                const name = await nameList[index].getText();
+                if(name === `${owner.name}`){
+                    await nameList[index].click();
+                    break;
+                }
+            }
+        });
+    }
+    
+    async getPetName () {
+        return runtime.allure.step(`Get pet name`, async () => {
+            await this.waitForElementVisible('petName', this.timeout.SHORT);
+            const name = await this.element('petName').getText();
+            this.log(`Got pet name '${name}'`);
+            return name;
+        });
+    }
+    
+    async getPetDob () {
+        return runtime.allure.step(`Get pet D.O.B`, async () => {
+            await this.waitForElementVisible('petDob', this.timeout.SHORT);
+
+            const dob = await this.element('petDob').getText();
+            this.log(`Got pet DOB '${dob}'`);
+            return dob;
+        });
+    }
+    
+    async getPetType () {
+        return runtime.allure.step(`Get pet type`, async () => {
+            await this.waitForElementVisible('petType', this.timeout.SHORT);
+
+            const type = await this.element('petType').getText();
+            this.log(`Got pet type '${type}'`);
+            return type;
+        })
+    }
+    
+    async getPetDetails () {
+        return runtime.allure.step(`Get pet details`,  async () => {
+            this.log(`Get pet details`);
+            const name = await this.getPetName();
+            const dob = await this.getPetDob();
+            const type = await this.getPetType();
+            const pet = await this.pojo('name', 'dob', 'type'); // create the POJO
+            return pet(name, dob, type); // create an 'instance' of the POJO
+        });
+    }
 }
 
 //export the page you created

@@ -1,23 +1,21 @@
-const { browser } = require('protractor');
-const logger = require('../../utils/log4jsconfig.js');
-const runtime = require('allure-mocha/runtime');
+import {browser, element, ElementArrayFinder, ElementFinder, protractor} from 'protractor';
+import { logger } from '../../utils/log4jsconfig'
 
-class Page {
-    route = '';
-
-    timeout = {
+export class Page {
+    protected route = '';
+    protected timeout = {
         SHORT: 2000,
         MEDIUM: 30000,
         LONG: 60000
     };
 
-   sels = {
+    protected sels: {
         /*
          selectorName: selector
          */
     };
 
-    constructor (sels, route){
+    constructor (sels:any, route:string){
         if(typeof sels === 'object') {
             this.sels = sels;
         } else {
@@ -31,9 +29,9 @@ class Page {
         }
     }
 
-    async pojo (...args) {
+    public async pojo (...args: any[]): Promise<any> {
         const members = args;
-        return function (...args) {
+        return function (...args: any[]) {
             const obj = {}, j = members.length;
             for (let i =0; i < j; ++i) {
                 obj[members[i]] = args[i];
@@ -42,37 +40,45 @@ class Page {
         };
     }
 
-    log(message) {
+    public log(message:string): void {
         logger.log().info(message);
-        runtime.allure.logStep(message);
     }
 
-    async navigate (waitFor, timeout) {
+    public logStep(message:string, context: any): void {
+
+        logger.log().info(message);
+
+        if(typeof context === 'object')
+            context.allure.logStep(message);
+    }
+
+    public async navigate (context?:any,waitFor?:string, timeout?:number): Promise<void>{
+       
         if(waitFor!==undefined) {
             await browser.get(this.route);
-            await browser.wait(this.isElementPresent(waitFor), timeout, `Navigate to page ${this.route} failed`);
+            await browser.wait(this.isElementPresent(waitFor), timeout, `Element ${waitFor} not found`);
         } else {
             await browser.get(this.route);
         }
     }
     
-    async title () {
+    public async title (): Promise<string> {
         return await browser.getTitle()
     }
 
-    async currentUrl () {
+    public async currentUrl (): Promise<string> {
         return await browser.getCurrentUrl()
     }
 
-    element (selName) {
+    public element (selName:string):ElementFinder {
         return element(this.sels[selName]);
     }
 
-    elements (selName) {
+    public elements (selName:string):ElementArrayFinder {
         return element.all(this.sels[selName]);
     }
 
-    async getSelector (selName) {
+    public async getSelector (selName) {
         const elementSelector = this.sels[selName];
         if (!elementSelector) {
             throw new Error('Cannot find element "'+selName+'"');
@@ -80,35 +86,31 @@ class Page {
         return elementSelector;
     }
 
-    async waitForElementText (selName, text, timeout) {
+    public async waitForElementText (selName:string, text:string, timeout:number) {
         return await browser.wait(protractor.ExpectedConditions.textToBePresentInElement(this.element(selName), text), timeout, `Element ${selName} not found`);
     }
 
-    async waitForElementVisible (selName, timeout) {
+    public async waitForElementVisible (selName:string, timeout:number) {
         return await browser.wait(protractor.ExpectedConditions.visibilityOf(this.element(selName)), timeout, `Element ${selName} not found`);
     }
 
-    async waitForElementInVisible (selName, timeout) {
+    public async waitForElementInVisible (selName:string, timeout:number) {
         return await browser.wait(protractor.ExpectedConditions.invisibilityOf(this.element(selName)), timeout, `Element ${selName} not found`);
     }
 
-    async waitForElementClickable (selName, timeout) {
+    public async waitForElementClickable (selName:string, timeout:number) {
         return await browser.wait(protractor.ExpectedConditions.elementToBeClickable(this.element(selName)), timeout, `Element ${selName} not found`);
     }
 
-    async waitForElementSelected (selName, timeout) {
+    public async waitForElementSelected (selName:string, timeout:number) {
         return await browser.wait(protractor.ExpectedConditions.elementToBeSelected(this.element(selName)), timeout, `Element ${selName} not found`);
     }
 
-    async waitForElementValue (selName, text, timeout) {
+    public async waitForElementValue (selName:string, text:string, timeout:number) {
         return await browser.wait(protractor.ExpectedConditions.textToBePresentInElementValue(this.element(selName), text), timeout, `Element ${selName} not found`);
     }
 
-    async isElementPresent (selName) {
+    public async isElementPresent (selName:string) {
         return await this.element(selName).isPresent();
     }
 }
-
-module.exports = {
-    Page
-};

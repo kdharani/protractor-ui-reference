@@ -1,4 +1,5 @@
 const { Page } = require('./fedex.page');
+const runtime = require('allure-mocha/runtime');
 
 const route = 'owners/add';
 
@@ -19,14 +20,23 @@ class OwnersAddPage extends Page {
         super (selectors, route);
     }
 
-    async addOwners (owner){
-        await this.waitForElementVisible('fnameTbx', this.timeout.SHORT);
-        await this.element('fnameTbx').sendKeys(owner.firstName);
-        await this.element('lnameTbx').sendKeys(owner.lastName)
-        await this.element('addressTbx').sendKeys(owner.address)
-        await this.element('cityTbx').sendKeys(owner.city)
-        await this.element('telephoneTbx').sendKeys(owner.telephone)
-        await this.element('addOwnerBtn').click()
+    async navigate() {
+        return await runtime.allure.step(`Navigate to owner add page`, async () => {
+            this.log(`Navigate to owner add page`);
+            return super.navigate();
+        });
+    }
+
+    async addOwners (owner) {
+        return await runtime.allure.step(`Add owner`, async () => {
+            await this.waitForElementVisible('fnameTbx', this.timeout.SHORT);
+            await this.element('fnameTbx').sendKeys(owner.firstName);
+            await this.element('lnameTbx').sendKeys(owner.lastName)
+            await this.element('addressTbx').sendKeys(owner.address)
+            await this.element('cityTbx').sendKeys(owner.city)
+            await this.element('telephoneTbx').sendKeys(owner.telephone)
+            await this.element('addOwnerBtn').click()
+        });
     }
 }
 

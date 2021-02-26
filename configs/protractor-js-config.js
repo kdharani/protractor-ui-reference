@@ -14,29 +14,20 @@ exports.config = {
         args: [
                  'start-maximized'
               ]
-      }
+      },
+      shardTestFiles: true,  // required for parallel
+      maxInstances: 2, // required for parallel -2
   },
   framework: 'mocha',
   specs: [
-      '../protractor-javascript/specs/spec.js'
+      '../protractor-javascript/specs/*spec.js'
   ],
   logLevel: 'INFO',
   mochaOpts: {
       bail: false,
       colors: true,
       compilers: 'ts:ts-node/register',
-      reporter: 'mochawesome-screenshots',
-      reporterOptions: {
-        reportDir: './reports',
-        reportName: 'protractor_mocha_report',
-        reportTitle: 'Reference UI Framework',
-        reportPageTitle: 'Pet Clinic',
-        takePassedScreenshot: true,
-        clearOldScreenshots: true,
-        shortScrFileNames: false,
-        jsonReport: true,
-        multiReport: false
-    },
+      reporter: 'allure-mocha',
       timeout: 60000, // mocha test timeout
       ui: "bdd",
   },

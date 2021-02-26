@@ -1,4 +1,5 @@
 const { Page } = require('./fedex.page');
+const runtime = require('allure-mocha/runtime');
 
 const route = 'vets/add';
 
@@ -16,13 +17,21 @@ class VetsAddPage extends Page {
         super (selectors, route);
     }
 
+    async navigate() {
+        return runtime.allure.step(`Navigate to vets add page`, async () => {
+            return super.navigate();
+        });
+    }
+
     async addVet (vet) {
-        await this.waitForElementVisible('firstNameTbx', this.timeout.SHORT);
-        await this.element('firstNameTbx').sendKeys(vet.firstName);
-        await this.element('lastNameTbx').sendKeys(vet.lastName);
-        await this.element('specialitiesDropDown').sendKeys(vet.speciality);
-        await this.element('saveVetButton').click();
-        await this.waitForElementInVisible('saveVetButton',this.timeout.SHORT);
+        return runtime.allure.step(`Add vet '${vet.firstName} ${vet.lastName}'`, async () => {
+            await this.waitForElementVisible('firstNameTbx', this.timeout.SHORT);
+            await this.element('firstNameTbx').sendKeys(vet.firstName);
+            await this.element('lastNameTbx').sendKeys(vet.lastName);
+            await this.element('specialitiesDropDown').sendKeys(vet.speciality);
+            await this.element('saveVetButton').click();
+            return await this.waitForElementInVisible('saveVetButton',this.timeout.SHORT);
+        });
     }
     
 }
