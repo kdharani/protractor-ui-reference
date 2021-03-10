@@ -33,6 +33,8 @@ exports.config = {
   },
 
   onPrepare: () => {
+    require("babel-register"); // The following babel require statements are required for translation 
+    require("babel-polyfill"); // of typescript imports at runtime
     const chai = require("chai").use(require("chai-as-promised"));
     globalAny.chai = chai;
 },

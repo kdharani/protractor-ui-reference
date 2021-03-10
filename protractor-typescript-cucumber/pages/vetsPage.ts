@@ -1,4 +1,5 @@
-import { Page } from "./fedex.page";
+import FedexBasePage from "./FedexBasePage";
+
 const route = 'vets';
 const selectors = {
     vetsTable: {css: '.table.table-striped'},
@@ -8,57 +9,59 @@ const selectors = {
     deleteButtons: {css: '.table.table-striped tr td:nth-child(3) button:nth-child(2)'}
 };
 
-class VetsPage extends Page {
+class VetsPage extends FedexBasePage {
 
     constructor () {
         super (selectors, route);
     }
 
-    public async navigate(context:any): Promise<void>{
-        this.logStep(`Navigate to vets page`, context);
+    public async navigate(context: unknown): Promise<void>{
+        this.log(`Navigate to vets page`, context);
         return super.navigate();
     }
 
-    public async getSpecialitiesCount (vet, context:any): Promise<number> {
+    public async getSpecialitiesCount (vet, context: unknown): Promise<number> {
         let count = 0;
 
-        this.logStep('Get specialties count', context)
+        this.log('Get specialties count', context)
 
         await this.waitForElementVisible('vetsTable', this.timeout.SHORT);
-        const specialities = await this.elements('specialitiesList');
+        const specialities = await this.getElements('specialitiesList');
         for(let i = 0; i < specialities.length; i++){
-            if(await specialities[i].getText() === vet.speciality){
+          
+            // Perform case insensitive comparisson
+            if(vet.speciality.localeCompare(await specialities[i].getText(), 
+                undefined, { sensitivity: 'base' }) === 0){
                 count++;
             }
-    
         }
 
-        this.logStep(`Got specialties count of '${count}'`, context);
+        this.log(`Got specialties count of '${count}'`, context);
         return count;
     }
 
-    public async getVetsCount (context:any): Promise<number> {
+    public async getVetsCount (context: unknown): Promise<number> {
         await this.waitForElementVisible('vetsTable', this.timeout.SHORT);
-        const vetsList = await this.elements('vetsList');
+        const vetsList = await this.getElements('vetsList');
 
         const vetCount = vetsList.length;
-        this.logStep(`Got vet count of '${vetCount}'`, context);
+        this.log(`Got vet count of '${vetCount}'`, context);
         return vetCount;
     }
 
-    public async deleteVet (vet, context:any): Promise<void>  {
+    public async deleteVet (vet, context: unknown): Promise<void>  {
+        await this.log(`Delete a vet '${vet.firstName} ${vet.lastName}`, context, async () => {
 
-        this.logStep(`Delete a vet '${vet.firstName} ${vet.lastName}`, context);
-        
-        await this.waitForElementVisible('vetsTable', this.timeout.SHORT);
-        const vetsList = await this.elements('vetsList');
-        const delBtns = await this.elements('deleteButtons');
-        
-        for(let i = 0; i < vetsList.length; i++){
-            if((await vetsList[i].getText()).trim() === `${vet.firstName} ${vet.lastName}`) {
-                await delBtns[i].click();
+            await this.waitForElementVisible('vetsTable', this.timeout.SHORT);
+            const vetsList = await this.getElements('vetsList');
+            const delBtns = await this.getElements('deleteButtons');
+            
+            for(let i = 0; i < vetsList.length; i++){
+                if((await vetsList[i].getText()).trim() === `${vet.firstName} ${vet.lastName}`) {
+                    await delBtns[i].click();
+                }
             }
-        }
+        });
     } 
 }
 

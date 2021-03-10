@@ -1,9 +1,8 @@
-let log4js=require('log4js');
+import log4js from 'log4js';
 
-let log=function(){
+let log = function(){
     log4js.configure('./utils/log4js.json');
-    let log=log4js.getLogger("default");
-    return log;
+    return log4js.getLogger("default");
 }
 
 module.exports={
