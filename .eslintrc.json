@@ -1,15 +1,31 @@
 {
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint",
+      "protractor"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:protractor/recommended"
+    ],
     "env": {
         "browser": true,
-        "commonjs": true,
-        "es2021": true
+        "node": true,
+        "mocha": true
     },
-    "extends": [
-        "standard"
-    ],
-    "parserOptions": {
-        "ecmaVersion": 12
+    "rules": { 
+      "no-console": 2 // Remember, this means error!
     },
-    "rules": {
-    }
-}
+    "overrides": [
+      {
+        "files": ["*.js"],
+        "rules": {
+          "@typescript-eslint/no-var-requires": "off",
+          "protractor/valid-locator-type": "off"
+        }
+      }
+  ]
+  }

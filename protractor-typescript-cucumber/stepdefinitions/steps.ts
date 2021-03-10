@@ -1,5 +1,5 @@
 import { Given, When, Then } from "cucumber";
-import { data } from "./../../data/testData";
+import data from "./../../data/testData";
 import { ownersAddPage } from '../pages/ownersAddPage';
 import { ownersPage } from '../pages/ownersPage';
 import { vetsPage } from '../pages/vetsPage';
@@ -18,7 +18,8 @@ When ('User selects Peter McTavish owner', async function() {
 })
 
 Then ("McTavish's pets and visits info should be displayed", async function() {
-    let pet = await ownersPage.getPetDetails(this);
+    const pet = await ownersPage.getPetDetails(this);
+
     expect(pet.name, 'Pet name mismatch').to.be.equal(data.pet.name);
     expect(pet.dob, 'Pet DOB mismatch').to.be.equal(data.pet.dob);
     expect(pet.type, 'Pet type mismatch').to.be.equal(data.pet.type);

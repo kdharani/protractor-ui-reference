@@ -1,5 +1,4 @@
-import { Page } from "./fedex.page";
-import { allure } from "allure-mocha/runtime";
+import FedexBasePage from "./FedexBasePage";
 
 const route = 'vets';
 const selectors = {
@@ -10,26 +9,28 @@ const selectors = {
     deleteButtons: {css: '.table.table-striped tr td:nth-child(3) button:nth-child(2)'}
 };
 
-class VetsPage extends Page {
+class VetsPage extends FedexBasePage {
 
     constructor () {
         super (selectors, route);
     }
 
     public async navigate(): Promise<void>{
-        return allure.step(`Navigate to vets page`, async () => {
-            this.log(`Navigate to vets page`);
+        return this.log(`Navigate to vets page`, async () => {
             return super.navigate();
         });
     }
 
     public async getSpecialitiesCount (vet): Promise<number> {
-        return allure.step(`Get specialties count for '${vet.firstName} ${vet.lastName}'`, async () => {
+        return this.log(`Get specialties count for '${vet.firstName} ${vet.lastName}'`, async () => {
             let count = 0;
             await this.waitForElementVisible('vetsTable', this.timeout.SHORT);
-            const specialities = await this.elements('specialitiesList');
+            const specialities = await this.getElements('specialitiesList');
             for(let i = 0; i < specialities.length; i++){
-                if(await specialities[i].getText() === vet.speciality){
+             
+                // Perform case insensitive comparisson
+                if(vet.speciality.localeCompare(await specialities[i].getText(), 
+                    undefined, { sensitivity: 'base' }) === 0){
                     count++;
                 }
             }
@@ -40,9 +41,9 @@ class VetsPage extends Page {
     }
 
     public async getVetsCount (): Promise<number> {
-        return allure.step(`Get vets count`, async () => {
+        return this.log(`Get vets count`, async () => {
             await this.waitForElementVisible('vetsTable', this.timeout.SHORT);
-            const vetsList = await this.elements('vetsList');
+            const vetsList = await this.getElements('vetsList');
 
             const vetCount = vetsList.length;
             this.log(`Got vet count of '${vetCount}'`);
@@ -51,10 +52,10 @@ class VetsPage extends Page {
     }
 
     public async deleteVet (vet): Promise<void>  {
-        return allure.step(`Delete vet '${vet.firstName} ${vet.lastName}'`, async () => {
+        return this.log(`Delete vet '${vet.firstName} ${vet.lastName}'`, async () => {
             await this.waitForElementVisible('vetsTable', this.timeout.SHORT);
-            const vetsList = await this.elements('vetsList');
-            const delBtns = await this.elements('deleteButtons');
+            const vetsList = await this.getElements('vetsList');
+            const delBtns = await this.getElements('deleteButtons');
             for(let i = 0; i < vetsList.length; i++){
                 if((await vetsList[i].getText()).trim() === `${vet.firstName} ${vet.lastName}`) {
                     await delBtns[i].click();

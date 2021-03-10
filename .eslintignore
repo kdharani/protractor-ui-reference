@@ -1,5 +1,8 @@
+allure-report
+allure-results
 data
 reports
 screenshots
 node_modules
 dist
+

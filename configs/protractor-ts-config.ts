@@ -1,9 +1,9 @@
-import {Config} from 'protractor';
+import { Config } from 'protractor';
 const globalAny: any = global;
 
 export const config: Config =  {
-  //Before performing any action, Protractor waits until there are no pending asynchronous tasks in your Angular application.
-  //This means that all timeouts and http requests are finished.
+  // Before performing any action, Protractor waits until there are no pending asynchronous tasks in your Angular application.
+  // This means that all timeouts and http requests are finished.
   allScriptsTimeout: 120000,
 
   seleniumAddress: 'http://localhost:4444/wd/hub',
@@ -11,10 +11,10 @@ export const config: Config =  {
   capabilities: {
       browserName: 'chrome',
       chromeOptions: {
-          args: ['start-maximized']
+          args: [ 'start-maximized' ]
       },
       shardTestFiles: true,  // required for parallel
-      maxInstances: 2, // required for parallel -2
+      maxInstances: 2, // required for parallel - 2
   },
 
   framework: 'mocha',
@@ -35,8 +35,8 @@ export const config: Config =  {
         const chai = require("chai").use(require("chai-as-promised"));
         globalAny.chai = chai;
   },
-
 };
+
 /*
 ====================================================================
 For full list of Protractor config options,

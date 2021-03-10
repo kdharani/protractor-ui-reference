@@ -1,6 +1,6 @@
-const { element } = require('protractor');
-const { Page } = require('./fedex.page.js');
-const runtime = require("allure-mocha/runtime");
+import FedexBasePage from './FedexBasePage.js';
+import Owner from "../model/owner"
+import Pet from "../model/pet"
 
 const route = 'owners';
 
@@ -12,56 +12,53 @@ const selectors = {
     petType : {css: '.table.table-striped .dl-horizontal dd:nth-child(6)'}
 };
 
-class OwnersPage extends Page {
+class OwnersPage extends FedexBasePage {
 
     constructor () {
         super (selectors, route);
     }
 
     async navigate() {
-        return await runtime.allure.step(`Navigate to owner page`, async () => {
+        return await this.log(`Navigate to owner page`, async () => {
             
             return super.navigate();
         });
     }
 
-    async getOwnerDetails (owner) {
-        return await runtime.allure.step(`Get owner details'`, async () => {
+    async getOwnerDetails(owner) {
+        return await this.log(`Get owner details'`, async () => {
             let name = "";
             let address = "";
             let city = "";
             let telephone = "";
-            let ownerDetail;
         
             await this.waitForElementVisible('ownersTable', this.timeout.SHORT);
-            const nameList  = await this.elements('ownerNameList');
-            
+            const nameList  = await this.getElements('ownerNameList');
+
             for (let index = 0; index < nameList.length; index += 1) {
                 name = await nameList[index].getText();
                 
-                if(name === `${owner.firstName} ${owner.lastName}`){
-                    address = await element(by.css(`.table-responsive tr:nth-child(${index+1}) td:nth-child(2)`)).getText();
-                    city = await element(by.css(`.table-responsive tr:nth-child(${index+1}) td:nth-child(3)`)).getText();
-                    telephone = await element(by.css(`.table-responsive tr:nth-child(${index+1}) td:nth-child(4)`)).getText();
-                    ownerDetail = await this.pojo('name', 'address', 'city', 'telephone'); // create the POJO
+                if(name === `${owner.firstName} ${owner.lastName}`) {
+                    address = await this.getTableColumnText('ownersTable', index+1, 'Address');
+
+                    city = await this.getTableColumnText('ownersTable', index+1, 'City');
+                    
+                    telephone = await this.getTableColumnText('ownersTable', index+1, 'Telephone');
                     break;
                 }
             }
 
             this.log(`Got owner details: '${name}, ${address}, ${city}, ${telephone}'`)
-            return ownerDetail(name, address, city, telephone);
+            return new Owner(name, address, city, telephone);
         })
     }
     
     async selectOwner (owner)  {
-        const message = `Select owner ${owner.name}'`;
-
-        runtime.allure.step(message , async () => {
-            this.log(message);
+        this.log(`Select owner ${owner.name}'`, async () => {
 
             await this.waitForElementVisible('ownersTable', this.timeout.SHORT);
         
-            const nameList  = await this.elements('ownerNameList');
+            const nameList  = await this.getElements('ownerNameList');
             for (let index = 0; index < nameList.length; index += 1) {
                 const name = await nameList[index].getText();
                 if(name === `${owner.name}`){
@@ -73,47 +70,46 @@ class OwnersPage extends Page {
     }
     
     async getPetName () {
-        return runtime.allure.step(`Get pet name`, async () => {
+        return this.log(`Get pet name`, async () => {
             await this.waitForElementVisible('petName', this.timeout.SHORT);
-            const name = await this.element('petName').getText();
+            
+            const name = await this.getElement('petName').getText();
             this.log(`Got pet name '${name}'`);
             return name;
         });
     }
     
     async getPetDob () {
-        return runtime.allure.step(`Get pet D.O.B`, async () => {
+        return this.log(`Get pet D.O.B`, async () => {
             await this.waitForElementVisible('petDob', this.timeout.SHORT);
 
-            const dob = await this.element('petDob').getText();
+            const dob = await this.getElement('petDob').getText();
             this.log(`Got pet DOB '${dob}'`);
             return dob;
         });
     }
     
     async getPetType () {
-        return runtime.allure.step(`Get pet type`, async () => {
+        return this.log(`Get pet type`, async () => {
             await this.waitForElementVisible('petType', this.timeout.SHORT);
 
-            const type = await this.element('petType').getText();
+            const type = await this.getElement('petType').getText();
             this.log(`Got pet type '${type}'`);
             return type;
         })
     }
     
     async getPetDetails () {
-        return runtime.allure.step(`Get pet details`,  async () => {
-            this.log(`Get pet details`);
+        return this.log(`Get pet details`,  async () => {
+            
             const name = await this.getPetName();
             const dob = await this.getPetDob();
             const type = await this.getPetType();
-            const pet = await this.pojo('name', 'dob', 'type'); // create the POJO
-            return pet(name, dob, type); // create an 'instance' of the POJO
+
+            return new Pet(name, dob, type);
         });
     }
 }
 
-//export the page you created
-module.exports = {
-    ownersPage: new OwnersPage()
-}
+
+let ownersPage; export default ownersPage = new OwnersPage()

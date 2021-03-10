@@ -1,4 +1,4 @@
-data = {
+const data = {
     newOwner: {
         firstName: 'testOwner', 
         lastName: 'testlastname',
@@ -21,6 +21,4 @@ data = {
     }
 }
 
-module.exports = {
-    data
-};
+export default data;
